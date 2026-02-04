@@ -14,18 +14,12 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS content (id INTEGER PRIMARY KEY, le
 
 # Sample KJV content
 content_data = [
-    (1, 'phonological_awareness', 'What rhymes with "pray"? (From Psalm 118:24)', 'day,cat,run', 'day', 'Think of a word that sounds like pray, like a bright new day.', 'Rhyming words end the same. 
-Example: Pray rhymes with day in "This is the day which the Lord hath made" (Psalm 118:24 KJV).'),
-    (1, 'phonics', 'Blend sounds to make "God" (g-o-d)', 'god,dog,got', 'god', 'Short o sound like in dog.', 'Phonics: G + o + d = God, as in "He that loveth not knoweth not God; for God is love" (1 
-John 4:8 KJV).'),
-    (2, 'phonological_awareness', 'Count syllables in "Jesus" (Je-sus)', '1,2,3', '2', 'Clap it out: Je-sus.', 'Syllables help rhythm. Jesus has 2, like in "For unto you is born this day in the city 
-of David a Saviour, which is Christ the Lord" (Luke 2:11 KJV).'),
-    (3, 'phonics', 'What word has silent e: faith (f-a-i-t-h)', 'faith,fat,fit', 'faith', 'Silent e makes long a sound.', 'Silent e in faith, from "Now faith is the substance of things hoped for, 
-the evidence of things not seen" (Hebrews 11:1 KJV).'),
-    (4, 'vocabulary', 'What means "love" in Bible terms? (Charity)', 'hate,kindness,anger', 'kindness', 'Unconditional like God\'s.', 'Vocabulary: Charity means selfless love, as in "Thou shalt love 
-thy neighbour as thyself" (Mark 12:31 KJV).'),
-    (5, 'comprehension', 'In the Creation story, what did God make on day 1? (Genesis 1)', 'light,animals,people', 'light', 'Read: "Let there be light."', 'Comprehension: God created light first 
-(Genesis 1:3 KJV: "And God said, Let there be light: and there was light"). Answer questions after short passages.')
+    (1, 'phonological_awareness', 'What rhymes with "pray"? (From Psalm 118:24)', 'day,cat,run', 'day', 'Think of a word that sounds like pray, like a bright new day.', 'Rhyming words end the same. Example: Pray rhymes with day in "This is the day which the Lord hath made" (Psalm 118:24 KJV).'),
+    (1, 'phonics', 'Blend sounds to make "God" (g-o-d)', 'god,dog,got', 'god', 'Short o sound like in dog.', 'Phonics: G + o + d = God, as in "He that loveth not knoweth not God; for God is love" (1 John 4:8 KJV).'),
+    (2, 'phonological_awareness', 'Count syllables in "Jesus" (Je-sus)', '1,2,3', '2', 'Clap it out: Je-sus.', 'Syllables help rhythm. Jesus has 2, like in "For unto you is born this day in the city of David a Saviour, which is Christ the Lord" (Luke 2:11 KJV).'),
+    (3, 'phonics', 'What word has silent e: faith (f-a-i-t-h)', 'faith,fat,fit', 'faith', 'Silent e makes long a sound.', 'Silent e in faith, from "Now faith is the substance of things hoped for, the evidence of things not seen" (Hebrews 11:1 KJV).'),
+    (4, 'vocabulary', 'What means "love" in Bible terms? (Charity)', 'hate,kindness,anger', 'kindness', 'Unconditional like God\'s.', 'Vocabulary: Charity means selfless love, as in "Thou shalt love thy neighbour as thyself" (Mark 12:31 KJV).'),
+    (5, 'comprehension', 'In the Creation story, what did God make on day 1? (Genesis 1)', 'light,animals,people', 'light', 'Read: "Let there be light."', 'Comprehension: God created light first (Genesis 1:3 KJV: "And God said, Let there be light: and there was light"). Answer questions after short passages.')
 ]
 for data in content_data:
     cursor.execute("INSERT OR IGNORE INTO content (level, area, question, options, answer, hint, instruction) VALUES (?, ?, ?, ?, ?, ?, ?)", data)
