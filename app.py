@@ -12,14 +12,10 @@ cursor = conn.cursor()
 cursor.execute('''CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, level INTEGER, score INTEGER, badges TEXT)''')
 cursor.execute('''CREATE TABLE IF NOT EXISTS content (id INTEGER PRIMARY KEY, level INTEGER, area TEXT, question TEXT, options TEXT, answer TEXT, hint TEXT, instruction TEXT)''')
 
-# Sample KJV content
+# Sample content for Level 15 Part 1 (Fluent Reading with Tower of Babel)
 content_data = [
-    (1, 'phonological_awareness', 'What rhymes with "pray"? (From Psalm 118:24)', 'day,cat,run', 'day', 'Think of a word that sounds like pray, like a bright new day.', 'Rhyming words end the same. Example: Pray rhymes with day in "This is the day which the Lord hath made" (Psalm 118:24 KJV).'),
-    (1, 'phonics', 'Blend sounds to make "God" (g-o-d)', 'god,dog,got', 'god', 'Short o sound like in dog.', 'Phonics: G + o + d = God, as in "He that loveth not knoweth not God; for God is love" (1 John 4:8 KJV).'),
-    (2, 'phonological_awareness', 'Count syllables in "Jesus" (Je-sus)', '1,2,3', '2', 'Clap it out: Je-sus.', 'Syllables help rhythm. Jesus has 2, like in "For unto you is born this day in the city of David a Saviour, which is Christ the Lord" (Luke 2:11 KJV).'),
-    (3, 'phonics', 'What word has silent e: faith (f-a-i-t-h)', 'faith,fat,fit', 'faith', 'Silent e makes long a sound.', 'Silent e in faith, from "Now faith is the substance of things hoped for, the evidence of things not seen" (Hebrews 11:1 KJV).'),
-    (4, 'vocabulary', 'What means "love" in Bible terms? (Charity)', 'hate,kindness,anger', 'kindness', 'Unconditional like God\'s.', 'Vocabulary: Charity means selfless love, as in "Thou shalt love thy neighbour as thyself" (Mark 12:31 KJV).'),
-    (5, 'comprehension', 'In the Creation story, what did God make on day 1? (Genesis 1)', 'light,animals,people', 'light', 'Read: "Let there be light."', 'Comprehension: God created light first (Genesis 1:3 KJV: "And God said, Let there be light: and there was light"). Answer questions after short passages.')
+    (15, 'fluent_reading', 'Listen and add punctuation: And the whole earth was of one language and of one speech', 'period,comma,exclamation', 'period', 'Listen for falling tone at end.', 'Intonation drops at periods. Example: "And God said, Let there be light."'),
+    # Add 4 more for part 1
 ]
 for data in content_data:
     cursor.execute("INSERT OR IGNORE INTO content (level, area, question, options, answer, hint, instruction) VALUES (?, ?, ?, ?, ?, ?, ?)", data)
@@ -44,7 +40,7 @@ def login():
         cursor.execute("SELECT * FROM users WHERE username=?", (username,))
         user = cursor.fetchone()
         if not user:
-            cursor.execute("INSERT INTO users (username, level, score, badges) VALUES (?, 1, 0, '')", (username,))
+            cursor.execute("INSERT INTO users (username, level, score, badges) VALUES (?, 15, 0, '')", (username,))
             conn.commit()
             cursor.execute("SELECT * FROM users WHERE username=?", (username,))
             user = cursor.fetchone()
@@ -91,12 +87,12 @@ def dashboard():
     </head>
     <body class="bg-light">
         <div class="container mt-5">
-            <h1 class="text-center mb-4">BibleLit Core Dashboard</h1>
+            <h1 class="text-center mb-4">Level 15: The Tower of Babel</h1>
             <div class="card p-4">
                 <p><strong>Level:</strong> {{ level }}</p>
                 <p><strong>Score:</strong> {{ score }}</p>
                 <p><strong>Badges:</strong> {{ badges }}</p>
-                <a href="/quiz?area=phonological_awareness" class="btn btn-primary">Start Phonological Awareness</a>
+                <a href="/quiz?area=fluent_reading" class="btn btn-primary">Start Part 1: Fluent Reading</a>
             </div>
         </div>
     </body>
@@ -108,7 +104,7 @@ def quiz():
     if 'user_id' not in session:
         return login()
     
-    area = request.args.get('area', 'phonological_awareness')
+    area = request.args.get('area', 'fluent_reading')
     cursor.execute("SELECT level, score FROM users WHERE id=?", (session['user_id'],))
     level, score = cursor.fetchone()
     difficulty = 'standard' if score >= 7 else 'guided' if score >= 3 else 'instruction'
@@ -142,11 +138,20 @@ def quiz():
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <title>BibleLit Core Quiz</title>
+        <style>
+            .fade-in { animation: fadeIn 1s; }
+            @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+            .bounce { animation: bounce 0.5s; }
+            @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-30px); } 60% { transform: translateY(-15px); } }
+        </style>
     </head>
     <body class="bg-light">
-        <div class="container mt-5">
+        <div class="container mt-5 fade-in">
             <h1 class="text-center mb-4">Level {{ level }}: {{ area.replace('_', ' ').title() }}</h1>
-            <div class="card p-4">
+            <audio controls>
+                <source src="https://example.com/your-audio.mp3" type="audio/mpeg">
+            </audio>
+            <div class="card p-4 bounce">
                 <p class="lead">{{ question }}</p>
                 <form id="quiz-form" method="post">
                     {% for opt in options_list %}
